@@ -1,2 +1,0 @@
-# project
-# rasoi-v1

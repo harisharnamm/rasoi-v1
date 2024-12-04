@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ChefHat, Receipt, BarChart3, Package, Building2, LayoutGrid, Utensils } from 'lucide-react';
+import { ChefHat, Receipt, BarChart3, Package, Building2, LayoutGrid, Utensils, Users } from 'lucide-react';
 
 export default function Header() {
   const location = useLocation();
@@ -14,7 +14,7 @@ export default function Header() {
         <div className="flex justify-between items-center">
           <Link to="/" className="flex items-center space-x-2">
             <ChefHat className="w-8 h-8 text-indigo-600" />
-            <span className="text-xl font-bold">Cloud Kitchen</span>
+            <span className="text-xl font-bold">Kitchen Copilot</span>
           </Link>
           
           <nav className="flex space-x-6">
@@ -65,6 +65,13 @@ export default function Header() {
                 >
                   <BarChart3 className="w-4 h-4 mr-1" />
                   Analytics
+                </Link>
+                <Link
+                  to="/admin/customers"
+                  className="text-gray-600 hover:text-gray-900 flex items-center"
+                >
+                  <Users className="w-4 h-4 mr-1" />
+                  Customers
                 </Link>
               </>
             ) : isManager ? (

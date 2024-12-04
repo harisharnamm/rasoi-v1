@@ -22,6 +22,7 @@ import UserMenu from './pages/user/Menu';
 import Cart from './pages/user/Cart';
 import Checkout from './pages/user/Checkout';
 import Header from './components/Header';
+import CustomerAnalytics from './pages/admin/CustomerAnalytics';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
             <Route path="/admin/billing" element={<AdminBilling />} />
             <Route path="/admin/analytics" element={<AdminAnalytics />} />
             <Route path="/admin/stores/*" element={<AdminStores />} />
+            <Route path="/admin/customers" element={<CustomerAnalytics />} />
             
             <Route path="/manager/tables" element={<TableLayout />} />
             <Route path="/manager/menu" element={<ManagerMenu />} />

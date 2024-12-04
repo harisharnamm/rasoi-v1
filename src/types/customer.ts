@@ -1,21 +1,3 @@
-export interface MenuItem {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  image: string;
-  available: boolean;
-  ingredients: {
-    itemId: string;
-    quantity: number;
-    unit: string;
-    wastagePercentage: number;
-  }[];
-  preparationInstructions: string;
-  preparationTime: number;
-  category: string;
-}
-
 export interface Customer {
   id: string;
   name: string;
@@ -29,9 +11,27 @@ export interface Customer {
   averageOrderValue: number;
   segment: 'vip' | 'repeat' | 'at-risk' | 'one-time' | 'inactive';
   preferredCategories: string[];
+  deliveryPreferences?: {
+    address: string;
+    instructions?: string;
+    preferredTime?: string;
+  };
   lastInteraction?: Date;
   tags: string[];
   notes?: string;
+}
+
+export interface CustomerInsight {
+  id: string;
+  customerId: string;
+  type: 'purchase_pattern' | 'preference' | 'risk' | 'opportunity';
+  title: string;
+  description: string;
+  priority: 'high' | 'medium' | 'low';
+  createdAt: Date;
+  expiresAt?: Date;
+  status: 'active' | 'resolved' | 'expired';
+  actionTaken?: string;
 }
 
 export interface CustomerActivity {
@@ -42,16 +42,4 @@ export interface CustomerActivity {
   details: string;
   value?: number;
   sentiment?: 'positive' | 'neutral' | 'negative';
-}
-
-export interface InventoryHistory {
-  id: string;
-  timestamp: string;
-  action: 'create' | 'update' | 'delete' | 'stock_update';
-  itemName: string;
-  sku: string;
-  previousValue?: string;
-  newValue?: string;
-  user: string;
-  notes?: string;
 }

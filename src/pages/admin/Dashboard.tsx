@@ -10,13 +10,16 @@ import {
   Upload,
   Settings,
   Users,
-  TrendingUp
+  TrendingUp,
+  Bot
 } from 'lucide-react';
 import { useStore } from '../../store/useStore'; 
+import PilotApprovalsModal from '../../components/PilotApprovalsModal';
 
 export default function Dashboard() {
   const { isAcceptingOrders, setAcceptingOrders } = useStore();
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showPilotApprovals, setShowPilotApprovals] = useState(false);
 
   const recentActivity = [
     { id: 1, type: 'order', message: 'New order #1234 received', time: '5 minutes ago' },
@@ -50,6 +53,13 @@ export default function Dashboard() {
           >
             <Bell className="h-6 w-6" />
             <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-400 ring-2 ring-white" />
+          </button>
+          <button
+            onClick={() => setShowPilotApprovals(true)}
+            className="flex items-center px-4 py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100"
+          >
+            <Bot className="w-5 h-5 mr-2" />
+            Pilot Approvals
           </button>
           <button
             onClick={() => setAcceptingOrders(!isAcceptingOrders)}
@@ -145,6 +155,13 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+      
+      {showPilotApprovals && (
+        <PilotApprovalsModal
+          isOpen={showPilotApprovals}
+          onClose={() => setShowPilotApprovals(false)}
+        />
+      )}
     </div>
   );
 }

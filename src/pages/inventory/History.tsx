@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import { useStore } from '../../store/useStore';
-import { Search, Filter, Download, Calendar } from 'lucide-react';
-import HistoryTable from '../../components/inventory/HistoryTable';
-import DateRangePicker from '../../components/common/DateRangePicker';
-import { exportToCSV } from '../../utils/exportUtils';
-import { filterHistoryLogs } from '../../utils/filterUtils';
-import toast from 'react-hot-toast';
+import { useStore } from '../../store/useStore'; 
+import { Search, Download } from 'lucide-react';
+import DateRangePicker from '../../components/common/DateRangePicker'; 
+import HistoryTable from '../../components/inventory/HistoryTable'; 
+import { exportToCSV } from '../../utils/exportUtils'; 
+import toast from 'react-hot-toast'; 
 
 export default function InventoryHistory() {
-  const { inventoryHistory, inventory } = useStore();
+  const { inventoryHistory } = useStore();
   const [searchQuery, setSearchQuery] = useState('');
   const [dateRange, setDateRange] = useState({ start: '', end: '' });
   const [selectedAction, setSelectedAction] = useState('all');
@@ -23,11 +22,7 @@ export default function InventoryHistory() {
 
   const handleExport = () => {
     try {
-      const data = filterHistoryLogs(inventoryHistory, {
-        searchQuery,
-        dateRange,
-        action: selectedAction
-      }).map(history => ({
+      const data = filteredHistory.map(history => ({
         Date: new Date(history.timestamp).toLocaleString(),
         Action: history.action,
         Item: history.itemName,
@@ -52,11 +47,29 @@ export default function InventoryHistory() {
     }));
   };
 
-  const filteredHistory = filterHistoryLogs(inventoryHistory, {
-    searchQuery,
-    dateRange,
-    action: selectedAction
-  });
+  const filteredHistory = inventoryHistory
+    .filter(log => {
+      const matchesSearch = 
+        log.itemName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        log.sku.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        log.user.toLowerCase().includes(searchQuery.toLowerCase());
+      
+      const matchesAction = selectedAction === 'all' || log.action === selectedAction;
+      
+      const logDate = new Date(log.timestamp);
+      const matchesDateRange = 
+        (!dateRange.start || logDate >= new Date(dateRange.start)) &&
+        (!dateRange.end || logDate <= new Date(dateRange.end));
+      
+      return matchesSearch && matchesAction && matchesDateRange;
+    })
+    .sort((a, b) => {
+      const modifier = sortConfig.direction === 'asc' ? 1 : -1;
+      if (sortConfig.key === 'timestamp') {
+        return modifier * (new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
+      }
+      return modifier * String(a[sortConfig.key]).localeCompare(String(b[sortConfig.key]));
+    });
 
   // Pagination
   const totalPages = Math.ceil(filteredHistory.length / entriesPerPage);

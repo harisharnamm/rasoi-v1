@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { CartItem, MenuItem, Order, Vendor, InventoryItem, PurchaseOrder, InventoryUsage, Store } from '../types';
+import { CartItem, MenuItem, Order, Vendor, InventoryItem, PurchaseOrder, InventoryUsage, Store, Customer, CustomerInsight, CustomerActivity } from '../types';
 
 interface StoreState {
   isAcceptingOrders: boolean;
@@ -11,7 +11,11 @@ interface StoreState {
   inventory: InventoryItem[];
   purchaseOrders: PurchaseOrder[];
   inventoryUsage: InventoryUsage[];
+  inventoryHistory: InventoryHistory[];
   stores: Store[];
+  customers: Customer[];
+  customerInsights: CustomerInsight[];
+  customerActivities: CustomerActivity[];
   
   setAcceptingOrders: (status: boolean) => void;
   addMenuItem: (item: MenuItem) => void;
@@ -49,6 +53,14 @@ interface StoreState {
   createPurchaseOrder: (order: Omit<PurchaseOrder, 'id' | 'createdAt'>) => void;
   updatePurchaseOrder: (orderId: string, updates: Partial<PurchaseOrder>) => void;
   deletePurchaseOrder: (orderId: string) => void;
+  
+  // Customer Management
+  addCustomer: (customer: Omit<Customer, 'id'>) => void;
+  updateCustomer: (customerId: string, updates: Partial<Customer>) => void;
+  deleteCustomer: (customerId: string) => void;
+  addCustomerInsight: (insight: Omit<CustomerInsight, 'id' | 'createdAt'>) => void;
+  updateCustomerInsight: (insightId: string, updates: Partial<CustomerInsight>) => void;
+  recordCustomerActivity: (activity: Omit<CustomerActivity, 'id'>) => void;
 }
 
 export const useStore = create<StoreState>()(
@@ -62,7 +74,136 @@ export const useStore = create<StoreState>()(
       inventory: [],
       purchaseOrders: [],
       inventoryUsage: [],
+      inventoryHistory: [],
       stores: [], // Initialize empty stores array
+      customers: [
+        {
+          id: '1',
+          name: 'Sarah Johnson',
+          email: 'sarah.j@email.com',
+          phone: '555-0123',
+          createdAt: new Date('2023-12-01'),
+          lastOrderDate: new Date('2024-02-15'),
+          totalOrders: 12,
+          lifetimeValue: 450.75,
+          averageOrderValue: 37.56,
+          segment: 'vip',
+          preferredCategories: ['Italian', 'Desserts'],
+          lastInteraction: new Date('2024-02-15'),
+          tags: ['frequent-diner', 'dessert-lover'],
+          notes: 'Prefers vegetarian options'
+        },
+        {
+          id: '2',
+          name: 'Michael Chen',
+          email: 'mchen@email.com',
+          phone: '555-0124',
+          createdAt: new Date('2023-11-15'),
+          lastOrderDate: new Date('2024-02-01'),
+          totalOrders: 8,
+          lifetimeValue: 320.50,
+          averageOrderValue: 40.06,
+          segment: 'repeat',
+          preferredCategories: ['Asian', 'Seafood'],
+          lastInteraction: new Date('2024-02-01'),
+          tags: ['seafood-lover'],
+          notes: 'Allergic to peanuts'
+        },
+        {
+          id: '3',
+          name: 'Emma Wilson',
+          email: 'emma.w@email.com',
+          phone: '555-0125',
+          createdAt: new Date('2023-10-20'),
+          lastOrderDate: new Date('2024-01-05'),
+          totalOrders: 3,
+          lifetimeValue: 89.97,
+          averageOrderValue: 29.99,
+          segment: 'at-risk',
+          preferredCategories: ['Mexican', 'Salads'],
+          lastInteraction: new Date('2024-01-05'),
+          tags: ['health-conscious'],
+          notes: 'Prefers low-carb options'
+        },
+        {
+          id: '4',
+          name: 'David Brown',
+          email: 'dbrown@email.com',
+          phone: '555-0126',
+          createdAt: new Date('2024-01-15'),
+          lastOrderDate: new Date('2024-01-15'),
+          totalOrders: 1,
+          lifetimeValue: 45.50,
+          averageOrderValue: 45.50,
+          segment: 'one-time',
+          preferredCategories: ['American'],
+          lastInteraction: new Date('2024-01-15'),
+          tags: ['new-customer'],
+          notes: ''
+        },
+        {
+          id: '5',
+          name: 'Lisa Martinez',
+          email: 'lmartinez@email.com',
+          phone: '555-0127',
+          createdAt: new Date('2023-09-01'),
+          lastOrderDate: new Date('2023-11-30'),
+          totalOrders: 0,
+          lifetimeValue: 0,
+          averageOrderValue: 0,
+          segment: 'inactive',
+          preferredCategories: [],
+          lastInteraction: new Date('2023-11-30'),
+          tags: ['inactive'],
+          notes: 'Follow up needed'
+        }
+      ],
+      customerInsights: [],
+      customerActivities: [
+        {
+          id: '1',
+          customerId: '1',
+          type: 'order',
+          timestamp: new Date('2024-02-15'),
+          details: 'Ordered Margherita Pizza and Tiramisu',
+          value: 42.50,
+          sentiment: 'positive'
+        },
+        {
+          id: '2',
+          customerId: '1',
+          type: 'review',
+          timestamp: new Date('2024-02-16'),
+          details: 'Left a 5-star review',
+          sentiment: 'positive'
+        },
+        {
+          id: '3',
+          customerId: '2',
+          type: 'order',
+          timestamp: new Date('2024-02-01'),
+          details: 'Ordered Sushi Platter',
+          value: 55.00,
+          sentiment: 'positive'
+        },
+        {
+          id: '4',
+          customerId: '3',
+          type: 'support',
+          timestamp: new Date('2024-01-05'),
+          details: 'Requested refund for delayed delivery',
+          sentiment: 'negative'
+        },
+        {
+          id: '5',
+          customerId: '4',
+          type: 'order',
+          timestamp: new Date('2024-01-15'),
+          details: 'Ordered Burger Combo',
+          value: 45.50,
+          sentiment: 'neutral'
+        }
+      ],
       
       setAcceptingOrders: (status) => set({ isAcceptingOrders: status }),
       
@@ -225,6 +366,41 @@ export const useStore = create<StoreState>()(
 
       deletePurchaseOrder: (orderId) => set((state) => ({
         purchaseOrders: state.purchaseOrders.filter((order) => order.id !== orderId)
+      })),
+
+      // Customer Management
+      addCustomer: (customer) => set((state) => ({
+        customers: [...state.customers, { ...customer, id: crypto.randomUUID() }]
+      })),
+
+      updateCustomer: (customerId, updates) => set((state) => ({
+        customers: state.customers.map((customer) =>
+          customer.id === customerId ? { ...customer, ...updates } : customer
+        )
+      })),
+
+      deleteCustomer: (customerId) => set((state) => ({
+        customers: state.customers.filter((customer) => customer.id !== customerId)
+      })),
+
+      addCustomerInsight: (insight) => set((state) => ({
+        customerInsights: [
+          ...state.customerInsights,
+          { ...insight, id: crypto.randomUUID(), createdAt: new Date() }
+        ]
+      })),
+
+      updateCustomerInsight: (insightId, updates) => set((state) => ({
+        customerInsights: state.customerInsights.map((insight) =>
+          insight.id === insightId ? { ...insight, ...updates } : insight
+        )
+      })),
+
+      recordCustomerActivity: (activity) => set((state) => ({
+        customerActivities: [
+          ...state.customerActivities,
+          { ...activity, id: crypto.randomUUID() }
+        ]
       })),
     }),
     {
