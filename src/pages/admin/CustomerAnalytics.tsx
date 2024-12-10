@@ -8,7 +8,8 @@ import {
   Search,
   Filter,
   Download,
-  MessageSquare
+  MessageSquare,
+  Bot
 } from 'lucide-react';
 import {
   BarChart,
@@ -28,6 +29,7 @@ import CustomerDetails from '../../components/customer/CustomerDetails';
 import CustomerSegments from '../../components/customer/CustomerSegments';
 import CustomerInsights from '../../components/customer/CustomerInsights';
 import ActivityHeatmap from '../../components/customer/ActivityHeatmap';
+import PilotApprovalsModal from '../../components/PilotApprovalsModal';
 import { exportToCSV } from '../../utils/exportUtils';
 import toast from 'react-hot-toast';
 
@@ -39,6 +41,7 @@ export default function CustomerAnalytics() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSegment, setSelectedSegment] = useState<string>('all');
   const [dateRange, setDateRange] = useState({ start: '', end: '' });
+  const [showPilotApprovals, setShowPilotApprovals] = useState(false);
 
   const segments = useMemo(() => {
     const total = customers.length;
@@ -94,16 +97,25 @@ export default function CustomerAnalytics() {
   }, [customers, searchQuery, selectedSegment, dateRange]);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-gray-900">Customer Analytics</h1>
-        <button
-          onClick={handleExport}
-          className="flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
-        >
-          <Download className="h-5 w-5 mr-2" />
-          Export Data
-        </button>
+        <div className="flex items-center space-x-4">
+          <button
+            onClick={() => setShowPilotApprovals(true)}
+            className="flex items-center px-4 py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100"
+          >
+            <Bot className="h-5 w-5 mr-2" />
+            Pilot Approvals
+          </button>
+          <button
+            onClick={handleExport}
+            className="flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+          >
+            <Download className="h-5 w-5 mr-2" />
+            Export Data
+          </button>
+        </div>
       </div>
 
       {/* Key Metrics */}
@@ -154,7 +166,7 @@ export default function CustomerAnalytics() {
               <p className="text-2xl font-semibold text-gray-900">
                 {customers.filter(c => 
                   c.lastInteraction && 
-                  c.lastInteraction.toDateString() === new Date().toDateString()
+                  new Date(c.lastInteraction).toDateString() === new Date().toDateString()
                 ).length}
               </p>
             </div>
@@ -223,6 +235,13 @@ export default function CustomerAnalytics() {
           <ActivityHeatmap customerId={selectedCustomer} />
         </div>
       </div>
+      
+      {showPilotApprovals && (
+        <PilotApprovalsModal
+          isOpen={showPilotApprovals}
+          onClose={() => setShowPilotApprovals(false)}
+        />
+      )}
     </div>
   );
 }

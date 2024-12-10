@@ -23,6 +23,7 @@ import Cart from './pages/user/Cart';
 import Checkout from './pages/user/Checkout';
 import Header from './components/Header';
 import CustomerAnalytics from './pages/admin/CustomerAnalytics';
+import Integrations from './pages/admin/Integrations';
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
             <Route path="/admin/analytics" element={<AdminAnalytics />} />
             <Route path="/admin/stores/*" element={<AdminStores />} />
             <Route path="/admin/customers" element={<CustomerAnalytics />} />
+            <Route path="/admin/integrations" element={<Integrations />} />
             
             <Route path="/manager/tables" element={<TableLayout />} />
             <Route path="/manager/menu" element={<ManagerMenu />} />

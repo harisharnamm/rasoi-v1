@@ -67,15 +67,358 @@ export const useStore = create<StoreState>()(
   persist(
     (set) => ({
       isAcceptingOrders: true,
-      menuItems: [],
+      menuItems: [
+        {
+          id: '1',
+          name: 'Margherita Pizza',
+          description: 'Classic tomato sauce, fresh mozzarella, basil',
+          price: 12.99,
+          image: 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=800',
+          available: true,
+          category: 'Pizza',
+          preparationTime: 20,
+          ingredients: [
+            { itemId: 'flour-001', quantity: 250, unit: 'g', wastagePercentage: 5 },
+            { itemId: 'tomato-001', quantity: 100, unit: 'g', wastagePercentage: 10 },
+            { itemId: 'cheese-001', quantity: 150, unit: 'g', wastagePercentage: 2 }
+          ]
+        },
+        {
+          id: '2',
+          name: 'Pepperoni Pizza',
+          description: 'Spicy pepperoni with melted cheese and tomato sauce',
+          price: 14.99,
+          image: 'https://images.unsplash.com/photo-1628840042765-356cda07504e?w=800',
+          available: true,
+          category: 'Pizza',
+          preparationTime: 20,
+          ingredients: [
+            { itemId: 'flour-001', quantity: 250, unit: 'g', wastagePercentage: 5 },
+            { itemId: 'tomato-001', quantity: 100, unit: 'g', wastagePercentage: 10 },
+            { itemId: 'cheese-001', quantity: 150, unit: 'g', wastagePercentage: 2 }
+          ]
+        },
+        {
+          id: '3',
+          name: 'Chicken Alfredo Pasta',
+          description: 'Creamy alfredo sauce with grilled chicken and parmesan',
+          price: 16.99,
+          image: 'https://images.unsplash.com/photo-1645112411341-6c4fd023714a?w=800',
+          available: true,
+          category: 'Pasta',
+          preparationTime: 25,
+          ingredients: []
+        },
+        {
+          id: '4',
+          name: 'Caesar Salad',
+          description: 'Crisp romaine lettuce, croutons, parmesan cheese with caesar dressing',
+          price: 10.99,
+          image: 'https://images.unsplash.com/photo-1550304943-4f24f54ddde9?w=800',
+          available: true,
+          category: 'Salads',
+          preparationTime: 10,
+          ingredients: []
+        },
+        {
+          id: '5',
+          name: 'Chocolate Brownie',
+          description: 'Warm chocolate brownie served with vanilla ice cream',
+          price: 7.99,
+          image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=800',
+          available: true,
+          category: 'Desserts',
+          preparationTime: 15,
+          ingredients: []
+        },
+        {
+          id: '6',
+          name: 'Garlic Bread',
+          description: 'Toasted bread with garlic butter and herbs',
+          price: 5.99,
+          image: 'https://images.unsplash.com/photo-1573140247632-f8fd74997d5c?w=800',
+          available: true,
+          category: 'Appetizers',
+          preparationTime: 10,
+          ingredients: []
+        },
+        {
+          id: '7',
+          name: 'Mushroom Risotto',
+          description: 'Creamy arborio rice with wild mushrooms and parmesan',
+          price: 15.99,
+          image: 'https://images.unsplash.com/photo-1476124369491-e7addf5db371?w=800',
+          available: true,
+          category: 'Mains',
+          preparationTime: 30,
+          ingredients: []
+        },
+        {
+          id: '8',
+          name: 'Tiramisu',
+          description: 'Classic Italian dessert with coffee-soaked ladyfingers',
+          price: 8.99,
+          image: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=800',
+          available: true,
+          category: 'Desserts',
+          preparationTime: 15,
+          ingredients: []
+        },
+        {
+          id: '9',
+          name: 'Caprese Salad',
+          description: 'Fresh mozzarella, tomatoes, and basil with balsamic glaze',
+          price: 11.99,
+          image: 'https://images.unsplash.com/photo-1592417817098-8fd3d9eb14a5?w=800',
+          available: true,
+          category: 'Salads',
+          preparationTime: 10,
+          ingredients: []
+        },
+        {
+          id: '10',
+          name: 'Grilled Salmon',
+          description: 'Fresh salmon fillet with lemon herb butter sauce',
+          price: 22.99,
+          image: 'https://images.unsplash.com/photo-1485704686097-ed47f7263ca4?w=800',
+          available: true,
+          category: 'Mains',
+          preparationTime: 25,
+          ingredients: []
+        }
+      ],
       cart: [],
       orders: [],
-      vendors: [],
-      inventory: [],
-      purchaseOrders: [],
-      inventoryUsage: [],
-      inventoryHistory: [],
-      stores: [], // Initialize empty stores array
+      vendors: [
+        {
+          id: 'v1',
+          name: 'Fresh Farm Produce',
+          contact: 'Sarah Johnson',
+          email: 'sarah@freshfarm.com',
+          phone: '555-0123',
+          address: '123 Farm Road, Rural County',
+          category: 'Produce',
+          paymentTerms: 'Net 30',
+          active: true
+        },
+        {
+          id: 'v2',
+          name: 'Premium Meats & Poultry',
+          contact: 'Michael Chen',
+          email: 'michael@premiummeats.com',
+          phone: '555-0124',
+          address: '456 Butcher Lane, Downtown',
+          category: 'Meat',
+          paymentTerms: 'Net 15',
+          active: true
+        },
+        {
+          id: 'v3',
+          name: 'Valley Fresh Dairy',
+          contact: 'Emma Wilson',
+          email: 'emma@valleydairy.com',
+          phone: '555-0125',
+          address: '789 Dairy Road, Riverside',
+          category: 'Dairy',
+          paymentTerms: 'Net 30',
+          active: true
+        },
+        {
+          id: 'v4',
+          name: 'Global Spice Traders',
+          contact: 'Raj Patel',
+          email: 'raj@globalspices.com',
+          phone: '555-0126',
+          address: '321 Spice Street, Market District',
+          category: 'Spices',
+          paymentTerms: 'Net 45',
+          active: true
+        },
+        {
+          id: 'v5',
+          name: 'Eco Packaging Solutions',
+          contact: 'Lisa Brown',
+          email: 'lisa@ecopack.com',
+          phone: '555-0127',
+          address: '654 Box Avenue, Industrial Park',
+          category: 'Packaging',
+          paymentTerms: 'Net 30',
+          active: false
+        }
+      ],
+      inventory: [
+        {
+          id: 'flour-001',
+          name: 'All-Purpose Flour',
+          sku: 'FL-001',
+          category: 'Dry Goods',
+          unit: 'kg',
+          price: 2.50,
+          vendorId: 'v1',
+          minimumStock: 50,
+          currentStock: 75,
+          brand: 'Golden Mills',
+          foodCategory: 'grains'
+        },
+        {
+          id: 'tomato-001',
+          name: 'Fresh Tomatoes',
+          sku: 'TM-001',
+          category: 'Produce',
+          unit: 'kg',
+          price: 3.99,
+          vendorId: 'v1',
+          minimumStock: 20,
+          currentStock: 15,
+          brand: 'Farm Fresh',
+          foodCategory: 'produce'
+        },
+        {
+          id: 'cheese-001',
+          name: 'Mozzarella Cheese',
+          sku: 'CH-001',
+          category: 'Dairy',
+          unit: 'kg',
+          price: 12.99,
+          vendorId: 'v3',
+          minimumStock: 25,
+          currentStock: 30,
+          brand: 'Dairy Best',
+          foodCategory: 'dairy'
+        },
+        {
+          id: 'chicken-001',
+          name: 'Chicken Breast',
+          sku: 'MT-001',
+          category: 'Meat',
+          unit: 'kg',
+          price: 8.99,
+          vendorId: 'v2',
+          minimumStock: 30,
+          currentStock: 25,
+          brand: 'Premium Poultry',
+          foodCategory: 'meat'
+        },
+        {
+          id: 'basil-001',
+          name: 'Fresh Basil',
+          sku: 'HB-001',
+          category: 'Herbs',
+          unit: 'kg',
+          price: 15.99,
+          vendorId: 'v1',
+          minimumStock: 5,
+          currentStock: 3,
+          brand: 'Fresh Herbs Co',
+          foodCategory: 'produce'
+        },
+        {
+          id: 'olive-oil-001',
+          name: 'Extra Virgin Olive Oil',
+          sku: 'OL-001',
+          category: 'Oils',
+          unit: 'liters',
+          price: 18.99,
+          vendorId: 'v4',
+          minimumStock: 15,
+          currentStock: 20,
+          brand: 'Mediterranean Gold',
+          foodCategory: 'oils'
+        },
+        {
+          id: 'pepper-001',
+          name: 'Black Peppercorns',
+          sku: 'SP-001',
+          category: 'Spices',
+          unit: 'kg',
+          price: 25.99,
+          vendorId: 'v4',
+          minimumStock: 5,
+          currentStock: 8,
+          brand: 'Global Spices',
+          foodCategory: 'spices'
+        },
+        {
+          id: 'milk-001',
+          name: 'Whole Milk',
+          sku: 'DY-001',
+          category: 'Dairy',
+          unit: 'liters',
+          price: 3.99,
+          vendorId: 'v3',
+          minimumStock: 40,
+          currentStock: 35,
+          brand: 'Valley Fresh',
+          foodCategory: 'dairy'
+        },
+        {
+          id: 'garlic-001',
+          name: 'Fresh Garlic',
+          sku: 'PR-001',
+          category: 'Produce',
+          unit: 'kg',
+          price: 6.99,
+          vendorId: 'v1',
+          minimumStock: 10,
+          currentStock: 12,
+          brand: 'Farm Fresh',
+          foodCategory: 'produce'
+        },
+        {
+          id: 'beef-001',
+          name: 'Ground Beef',
+          sku: 'MT-002',
+          category: 'Meat',
+          unit: 'kg',
+          price: 11.99,
+          vendorId: 'v2',
+          minimumStock: 25,
+          currentStock: 18,
+          brand: 'Premium Meats',
+          foodCategory: 'meat'
+        }
+      ],
+      stores: [
+        {
+          id: 's1',
+          name: 'Downtown Kitchen',
+          description: 'Our flagship location in the heart of downtown',
+          location: {
+            latitude: 40.7128,
+            longitude: -74.0060,
+            address: '123 Main Street',
+            city: 'New York',
+            state: 'NY',
+            zipCode: '10001'
+          },
+          contactEmail: 'downtown@kitchen.com',
+          contactPhone: '555-0001',
+          operatingHours: [
+            { day: 'monday', open: '09:00', close: '22:00', isClosed: false },
+            { day: 'tuesday', open: '09:00', close: '22:00', isClosed: false },
+            { day: 'wednesday', open: '09:00', close: '22:00', isClosed: false },
+            { day: 'thursday', open: '09:00', close: '22:00', isClosed: false },
+            { day: 'friday', open: '09:00', close: '23:00', isClosed: false },
+            { day: 'saturday', open: '10:00', close: '23:00', isClosed: false },
+            { day: 'sunday', open: '10:00', close: '21:00', isClosed: false }
+          ],
+          manager: {
+            name: 'James Wilson',
+            email: 'james@kitchen.com',
+            phone: '555-0002',
+            role: 'store_manager'
+          },
+          status: 'active',
+          images: {
+            storefront: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800',
+            interior: 'https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?w=800',
+            logo: 'https://images.unsplash.com/photo-1581873372796-635b67ca2008?w=800'
+          },
+          documents: [],
+          createdAt: new Date('2023-01-01'),
+          updatedAt: new Date('2024-01-01')
+        }
+      ],
       customers: [
         {
           id: '1',

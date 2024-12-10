@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { X, Check, AlertTriangle, DollarSign, TrendingDown, Truck, MessageSquare, Tag } from 'lucide-react';
 
 interface Task {
@@ -16,8 +17,50 @@ interface PilotApprovalsModalProps {
 }
 
 export default function PilotApprovalsModal({ isOpen, onClose }: PilotApprovalsModalProps) {
+  const location = useLocation();
+  const isCustomerAnalytics = location.pathname.includes('/customers');
+  
   const [tasks, setTasks] = useState<Task[]>([
+    ...(isCustomerAnalytics ? [{
+      id: '1',
+      title: 'Generate Personalized Promo Codes',
+      description: 'Create unique promotional codes for VIP customers based on their purchase history. 25 customers qualify for special discounts.',
+      impact: 'Potential revenue increase of $2,500',
+      priority: 'high',
+      status: 'pending'
+    },
     {
+      id: '2',
+      title: 'Send Review Request Emails',
+      description: '15 customers who made purchases in the last week haven\'t left reviews. Should I send automated review requests?',
+      impact: 'Improve review collection rate by 35%',
+      priority: 'medium',
+      status: 'pending'
+    },
+    {
+      id: '3',
+      title: 'Launch Re-engagement Campaign',
+      description: 'Create targeted email campaign for 30 at-risk customers who haven\'t ordered in 15+ days',
+      impact: 'Reduce customer churn by 20%',
+      priority: 'high',
+      status: 'pending'
+    },
+    {
+      id: '4',
+      title: 'Schedule Birthday Rewards',
+      description: '8 VIP customers have birthdays next week. Send personalized offers and birthday wishes?',
+      impact: 'Increase customer loyalty and satisfaction',
+      priority: 'medium',
+      status: 'pending'
+    },
+    {
+      id: '5',
+      title: 'Optimize Email Send Times',
+      description: 'Analysis shows better engagement potential by adjusting email delivery times based on customer activity patterns',
+      impact: 'Expected 15% improvement in open rates',
+      priority: 'medium',
+      status: 'pending'
+    }] : [{
       id: '1',
       title: 'Reorder Low Stock Items',
       description: 'Would you like me to reorder inventory for items below threshold? Tomatoes, Onions, and Chicken are running low.',
@@ -56,7 +99,7 @@ export default function PilotApprovalsModal({ isOpen, onClose }: PilotApprovalsM
       impact: '$3,840 potential annual savings',
       priority: 'high',
       status: 'pending'
-    }
+    }])
   ]);
 
   const handleApprove = (taskId: string) => {

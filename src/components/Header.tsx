@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ChefHat, Receipt, BarChart3, Package, Building2, LayoutGrid, Utensils, Users } from 'lucide-react';
+import { ChefHat, Receipt, BarChart3, Package, Building2, LayoutGrid, Utensils, Users, Link2 } from 'lucide-react';
 
 export default function Header() {
   const location = useLocation();
@@ -72,6 +72,13 @@ export default function Header() {
                 >
                   <Users className="w-4 h-4 mr-1" />
                   Customers
+                </Link>
+                <Link
+                  to="/admin/integrations"
+                  className="text-gray-600 hover:text-gray-900 flex items-center"
+                >
+                  <Link2 className="w-4 h-4 mr-1" />
+                  Integrations
                 </Link>
               </>
             ) : isManager ? (

@@ -24,7 +24,7 @@ export default function Menu() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
       {!isAcceptingOrders && (
         <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700">
           We are currently not accepting orders. Please check back later.
