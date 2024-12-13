@@ -1,9 +1,15 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useStore } from '../../store/useStore';
 import { Trash2, Plus, Minus } from 'lucide-react';
+import UpsellCard from '../../components/cart/UpsellCard';
+import OrderDetailsCard from '../../components/cart/OrderDetailsCard';
 
 export default function Cart() {
   const { cart, updateQuantity, removeFromCart } = useStore();
+  const [orderType, setOrderType] = useState<'delivery' | 'dine-in' | 'pickup'>('delivery');
+  const [tip, setTip] = useState(0);
+  const [instructions, setInstructions] = useState('');
 
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
@@ -22,7 +28,7 @@ export default function Cart() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto space-y-8">
+    <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
       <h1 className="text-2xl font-bold text-gray-900">Shopping Cart</h1>
 
       <div className="bg-white rounded-lg shadow-sm">
@@ -64,10 +70,33 @@ export default function Cart() {
         </ul>
       </div>
 
+      {/* Upsell Section */}
+      <UpsellCard />
+
+      {/* Order Details */}
+      <OrderDetailsCard
+        orderType={orderType}
+        onOrderTypeChange={setOrderType}
+        tip={tip}
+        onTipChange={setTip}
+        instructions={instructions}
+        onInstructionsChange={setInstructions}
+      />
+
       <div className="bg-white p-6 rounded-lg shadow-sm">
         <div className="flex justify-between text-lg font-medium">
-          <span>Total</span>
+          <span>Subtotal</span>
           <span>${total.toFixed(2)}</span>
+        </div>
+        {tip > 0 && (
+          <div className="flex justify-between text-sm text-gray-500 mt-2">
+            <span>Tip ({tip}%)</span>
+            <span>${(total * (tip/100)).toFixed(2)}</span>
+          </div>
+        )}
+        <div className="flex justify-between text-lg font-bold mt-4 pt-4 border-t">
+          <span>Total</span>
+          <span>${(total * (1 + tip/100)).toFixed(2)}</span>
         </div>
         <Link
           to="/checkout"

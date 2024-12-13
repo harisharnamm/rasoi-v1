@@ -2,6 +2,7 @@ import React from 'react';
 import { useStore } from '../../store/useStore';
 import { Package, DollarSign, AlertTriangle, Users } from 'lucide-react';
 import DashboardCard from '../../components/inventory/DashboardCard';
+import InventoryAnalytics from '../../components/inventory/InventoryAnalytics';
 import AlertCard from '../../components/inventory/AlertCard';
 import ProductCard from '../../components/inventory/ProductCard';
 import VendorCard from '../../components/inventory/VendorCard';
@@ -50,6 +51,9 @@ export default function InventoryDashboard() {
           icon={DollarSign}
         />
       </div>
+
+      {/* Analytics Section */}
+      <InventoryAnalytics />
 
       {/* Alerts Section */}
       {lowStockItems.length > 0 && (

@@ -8,6 +8,7 @@ import AdminOrders from './pages/admin/Orders';
 import AdminBilling from './pages/admin/Billing';
 import AdminAnalytics from './pages/admin/Analytics';
 import AdminStores from './pages/admin/Stores';
+import Categories from './pages/admin/menu/Categories';
 import ManagerMenu from './pages/manager/ManagerMenu';
 import TableLayout from './pages/manager/TableLayout';
 import WaiterDashboard from './pages/waiter/WaiterDashboard';
@@ -34,6 +35,7 @@ function App() {
           <Routes>
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/menu" element={<AdminMenu />} />
+            <Route path="/admin/menu/categories" element={<Categories />} />
             <Route path="/admin/orders" element={<AdminOrders />} />
             <Route path="/admin/billing" element={<AdminBilling />} />
             <Route path="/admin/analytics" element={<AdminAnalytics />} />

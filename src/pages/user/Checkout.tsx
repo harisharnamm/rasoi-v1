@@ -62,36 +62,6 @@ export default function Checkout() {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="bg-white p-6 rounded-lg shadow-sm space-y-4">
-          <h2 className="text-lg font-medium text-gray-900">Order Type</h2>
-          <div className="flex space-x-4">
-            <label className="flex items-center">
-              <input
-                type="radio"
-                value="delivery"
-                checked={formData.type === 'delivery'}
-                onChange={(e) =>
-                  setFormData({ ...formData, type: e.target.value })
-                }
-                className="mr-2"
-              />
-              Delivery
-            </label>
-            <label className="flex items-center">
-              <input
-                type="radio"
-                value="dine-in"
-                checked={formData.type === 'dine-in'}
-                onChange={(e) =>
-                  setFormData({ ...formData, type: e.target.value })
-                }
-                className="mr-2"
-              />
-              Dine-in
-            </label>
-          </div>
-        </div>
-
-        <div className="bg-white p-6 rounded-lg shadow-sm space-y-4">
           <h2 className="text-lg font-medium text-gray-900">Contact Details</h2>
           <div>
             <label className="block text-sm font-medium text-gray-700">

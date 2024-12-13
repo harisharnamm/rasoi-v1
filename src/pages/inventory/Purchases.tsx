@@ -2,18 +2,19 @@ import React, { useState } from 'react';
 import { useStore } from '../../store/useStore';
 import { Plus, Filter, Search } from 'lucide-react';
 import toast from 'react-hot-toast';
+import type { PurchaseOrder } from '../../store/slices/purchaseOrderSlice';
 import PurchaseOrderForm from '../../components/inventory/PurchaseOrderForm';
 import PurchaseOrderList from '../../components/inventory/PurchaseOrderList';
 
 export default function InventoryPurchases() {
-  const { purchaseOrders, createPurchaseOrder, updatePurchaseOrder, deletePurchaseOrder } = useStore();
+  const { purchaseOrders = [], createPurchaseOrder, updatePurchaseOrder, deletePurchaseOrder } = useStore();
   const [isCreating, setIsCreating] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [paymentFilter, setPaymentFilter] = useState('all');
 
-  const handleSubmit = (formData: any) => {
+  const handleSubmit = (formData: Omit<PurchaseOrder, 'id' | 'createdAt'>) => {
     try {
       if (selectedOrder) {
         updatePurchaseOrder(selectedOrder, formData);
