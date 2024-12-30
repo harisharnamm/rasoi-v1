@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { MenuCategory } from '../../../types/menu';
 import { MenuItem } from '../../../types';
+import { useStore } from '../../../store/useStore';
+import toast from 'react-hot-toast';
 
 interface CategorySectionProps {
   category: MenuCategory;
@@ -15,6 +17,25 @@ export default function CategorySection({
   isExpanded: initialExpanded = true
 }: CategorySectionProps) {
   const [isExpanded, setIsExpanded] = useState(initialExpanded);
+  const { addToCart, isAcceptingOrders } = useStore();
+
+  const handleAddToCart = (item: MenuItem) => {
+    if (!isAcceptingOrders) {
+      toast.error('Sorry, we are not accepting orders at the moment');
+      return;
+    }
+    if (!item.available) {
+      toast.error('This item is currently unavailable');
+      return;
+    }
+    addToCart({
+      id: item.id,
+      name: item.name,
+      price: item.price || 0,
+      quantity: 1
+    });
+    toast.success('Added to cart');
+  };
 
   return (
     <div className="border-b border-gray-200 last:border-0 pb-8">
@@ -60,7 +81,7 @@ export default function CategorySection({
                     <h4 className="text-lg font-medium text-gray-900">{item.name}</h4>
                     <p className="text-sm text-gray-500 mt-1">{item.description}</p>
                   </div>
-                  <p className="text-lg font-bold text-indigo-600">${item.price.toFixed(2)}</p>
+                  <p className="text-lg font-bold text-indigo-600">${(item.price || 0).toFixed(2)}</p>
                 </div>
                 {!item.available && (
                   <p className="mt-2 text-sm text-red-600">Currently unavailable</p>
@@ -74,7 +95,10 @@ export default function CategorySection({
                 )}
                 <div className="mt-4">
                   <button
-                    onClick={() => {/* Add to cart handler */}}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleAddToCart(item);
+                    }}
                     disabled={!item.available}
                     className={`w-full px-4 py-2 rounded-lg text-sm font-medium ${
                       item.available

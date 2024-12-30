@@ -1,23 +1,47 @@
 import { StateCreator } from 'zustand';
-import { Order } from '../../types';
+import { Order, CartItem } from '../../types';
+import { sampleOrders } from '../../data/sampleOrders';
 
 interface OrderSlice {
   orders: Order[];
-  addOrder: (order: Omit<Order, 'id' | 'createdAt'>) => void;
+  addOrder: (orderData: {
+    items: CartItem[];
+    total: number;
+    type: 'delivery' | 'dine-in';
+    customerDetails: {
+      name: string;
+      phone: string;
+      address?: string;
+    };
+  }) => void;
   updateOrderStatus: (id: string, status: Order['status']) => void;
   deleteOrder: (id: string) => void;
 }
 
 export const orderSlice: StateCreator<OrderSlice> = (set) => ({
-  orders: [],
+  orders: sampleOrders,
   
-  addOrder: (order) => set((state) => ({
-    orders: [...state.orders, {
-      ...order,
+  addOrder: (orderData) => set((state) => {
+    const newOrder: Order = {
       id: crypto.randomUUID(),
+      source: 'website',
+      status: 'pending',
+      items: orderData.items.map(item => ({
+        id: item.id,
+        name: item.name,
+        quantity: item.quantity,
+        price: item.price || 0
+      })),
+      total: orderData.total || 0,
+      customerName: orderData.customerDetails.name,
+      deliveryAddress: orderData.type === 'delivery' ? orderData.customerDetails.address : undefined,
       createdAt: new Date()
-    }]
-  })),
+    };
+
+    return {
+      orders: [...state.orders, newOrder]
+    };
+  }),
   
   updateOrderStatus: (id, status) => set((state) => ({
     orders: state.orders.map((order) =>

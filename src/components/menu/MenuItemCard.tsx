@@ -18,7 +18,7 @@ export default function MenuItemCard({
   return (
     <div className="bg-white rounded-lg shadow-sm overflow-hidden">
       <img
-        src={item.image}
+        src={item.image || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c'}
         alt={item.name}
         className="w-full h-48 object-cover"
       />
@@ -29,7 +29,7 @@ export default function MenuItemCard({
             <p className="text-sm text-gray-500">{item.category}</p>
           </div>
           <span className="text-lg font-bold text-indigo-600">
-            ${item.price.toFixed(2)}
+            ${(item.price || 0).toFixed(2)}
           </span>
         </div>
         <p className="mt-2 text-gray-600">{item.description}</p>

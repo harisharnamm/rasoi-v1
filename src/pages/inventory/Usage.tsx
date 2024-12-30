@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useStore } from '../../store/useStore';
-import { Search, Filter, Download, Calendar } from 'lucide-react';
+import { Search, Filter, Download, Calendar, Plus } from 'lucide-react';
 import UsageLogTable from '../../components/inventory/UsageLogTable';
 import DateRangePicker from '../../components/common/DateRangePicker';
+import UsageInputModal from '../../components/inventory/UsageInputModal';
 import { exportToCSV } from '../../utils/exportUtils';
 import { filterUsageLogs } from '../../utils/filterUtils';
 import toast from 'react-hot-toast';
@@ -14,6 +15,7 @@ export default function InventoryUsage() {
   const [selectedReason, setSelectedReason] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
   const [entriesPerPage, setEntriesPerPage] = useState(10);
+  const [isUsageModalOpen, setIsUsageModalOpen] = useState(false);
   const [sortConfig, setSortConfig] = useState({
     key: 'date',
     direction: 'desc' as 'asc' | 'desc'
@@ -69,7 +71,16 @@ export default function InventoryUsage() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-900">Usage Log</h1>
+        <div className="flex items-center space-x-4">
+          <h2 className="text-lg font-medium text-gray-900">Usage Log</h2>
+          <button
+            onClick={() => setIsUsageModalOpen(true)}
+            className="flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+          >
+            <Plus className="h-5 w-5 mr-2" />
+            Record Usage
+          </button>
+        </div>
         <button
           onClick={handleExport}
           className="flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
@@ -156,6 +167,11 @@ export default function InventoryUsage() {
           </button>
         </div>
       </div>
+
+      <UsageInputModal 
+        isOpen={isUsageModalOpen}
+        onClose={() => setIsUsageModalOpen(false)}
+      />
     </div>
   );
 }

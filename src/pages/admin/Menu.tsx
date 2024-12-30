@@ -5,12 +5,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import MenuItemForm from '../../components/menu/MenuItemForm';
 import MenuItemCard from '../../components/menu/MenuItemCard';
 import MenuSearchBar from '../../components/menu/MenuSearchBar';
-import { filterAndSortMenuItems, getUniqueCategories } from '../../utils/menuFilters';
+import { filterAndSortMenuItems } from '../../utils/menuFilters';
 import toast from 'react-hot-toast';
 
 export default function Menu() {
   const navigate = useNavigate();
-  const { menuItems, addMenuItem, updateMenuItem, toggleItemAvailability, deleteMenuItem } = useStore();
+  const { menuItems, menuCategories, addMenuItem, updateMenuItem, toggleItemAvailability, deleteMenuItem } = useStore();
   const [isAdding, setIsAdding] = useState(false);
   const [editingItem, setEditingItem] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -18,7 +18,7 @@ export default function Menu() {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [selectedCategory, setSelectedCategory] = useState('all');
 
-  const categories = getUniqueCategories(menuItems);
+  const categories = ['all', ...menuCategories.filter(c => c.isActive).map(c => c.name)];
 
   const handleSort = (key: 'name' | 'price') => {
     if (sortBy === key) {
@@ -92,6 +92,7 @@ export default function Menu() {
           }}
           isEditing={!!editingItem}
           initialData={editingItem ? menuItems.find(item => item.id === editingItem) : undefined}
+          categories={menuCategories.filter(c => c.isActive).map(c => c.name)}
         />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

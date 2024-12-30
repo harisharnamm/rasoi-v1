@@ -18,8 +18,13 @@ export const groupItemsByCategory = (
   // Group items by category
   items.forEach(item => {
     let hasCategory = false;
+
+    // Check if item has a category that matches any active category
     categories.forEach(category => {
-      if (category.isActive && item.categories?.includes(category.id)) {
+      if (category.isActive && item.category === category.name) {
+        if (!groupedItems[category.id]) {
+          groupedItems[category.id] = [];
+        }
         groupedItems[category.id].push(item);
         hasCategory = true;
       }

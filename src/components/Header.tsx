@@ -7,9 +7,11 @@ export default function Header() {
   const isAdmin = location.pathname.startsWith('/admin');
   const isManager = location.pathname.startsWith('/manager');
   const isWaiter = location.pathname.startsWith('/waiter');
+  const isKitchen = location.pathname.startsWith('/kitchen');
+  const isOnboarding = location.pathname.startsWith('/onboarding') || location.pathname.startsWith('/setup');
 
   return (
-    <header className="bg-white shadow-sm fixed top-0 left-0 right-0 z-50">
+    <header className={`bg-white shadow-sm fixed top-0 ${isAdmin ? 'lg:left-64' : 'left-0'} right-0 z-50`}>
       <div className="max-w-7xl mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           <Link to="/" className="flex items-center space-x-2">
@@ -19,68 +21,7 @@ export default function Header() {
           
           <nav className="flex space-x-6">
             {isAdmin ? (
-              <>
-                <Link
-                  to="/admin"
-                  className="text-gray-600 hover:text-gray-900"
-                >
-                  Dashboard
-                </Link>
-                <Link
-                  to="/admin/menu"
-                  className="text-gray-600 hover:text-gray-900"
-                >
-                  Menu
-                </Link>
-                <Link
-                  to="/admin/orders"
-                  className="text-gray-600 hover:text-gray-900"
-                >
-                  Orders
-                </Link>
-                <Link
-                  to="/admin/inventory"
-                  className="text-gray-600 hover:text-gray-900 flex items-center"
-                >
-                  <Package className="w-4 h-4 mr-1" />
-                  Inventory
-                </Link>
-                <Link
-                  to="/admin/stores"
-                  className="text-gray-600 hover:text-gray-900 flex items-center"
-                >
-                  <Building2 className="w-4 h-4 mr-1" />
-                  Stores
-                </Link>
-                <Link
-                  to="/admin/billing"
-                  className="text-gray-600 hover:text-gray-900 flex items-center"
-                >
-                  <Receipt className="w-4 h-4 mr-1" />
-                  Billing
-                </Link>
-                <Link
-                  to="/admin/analytics"
-                  className="text-gray-600 hover:text-gray-900 flex items-center"
-                >
-                  <BarChart3 className="w-4 h-4 mr-1" />
-                  Analytics
-                </Link>
-                <Link
-                  to="/admin/customers"
-                  className="text-gray-600 hover:text-gray-900 flex items-center"
-                >
-                  <Users className="w-4 h-4 mr-1" />
-                  Customers
-                </Link>
-                <Link
-                  to="/admin/integrations"
-                  className="text-gray-600 hover:text-gray-900 flex items-center"
-                >
-                  <Link2 className="w-4 h-4 mr-1" />
-                  Integrations
-                </Link>
-              </>
+              null
             ) : isManager ? (
               <>
                 <Link
@@ -108,10 +49,15 @@ export default function Header() {
                   Orders
                 </Link>
               </>
+            ) : isKitchen || isOnboarding ? (
+              null
             ) : (
               <>
                 <Link to="/" className="text-gray-600 hover:text-gray-900">
                   Menu
+                </Link>
+                <Link to="/orders" className="text-gray-600 hover:text-gray-900">
+                  Orders
                 </Link>
                 <Link to="/cart" className="text-gray-600 hover:text-gray-900">
                   Cart

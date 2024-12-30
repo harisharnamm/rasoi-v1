@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useStore } from '../../store/useStore';
+import { useStore } from '../../store/useStore'; 
+import { MenuItem, CartItem } from '../../types';
 import { Plus, Minus, Search, Receipt, Printer, FileText } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { generateRetailInvoice, generateKOT } from '../../utils/pdfGenerator';
@@ -20,6 +21,10 @@ export default function Billing() {
   const filteredItems = menuItems.filter(item => 
     item.name.toLowerCase().includes(searchQuery.toLowerCase()) && item.available
   );
+
+  const calculateTotal = (items: CartItem[]) => {
+    return items.reduce((sum, item) => sum + (getItemPrice(item) * item.quantity), 0);
+  };
 
   const getItemQuantity = (itemId: string) => {
     const item = selectedItems.find(i => i.id === itemId);
@@ -141,7 +146,7 @@ export default function Billing() {
                   <div className="flex justify-between items-start">
                     <h3 className="text-lg font-semibold text-gray-900">{item.name}</h3>
                     <span className="text-lg font-bold text-indigo-600">
-                      ${item.price.toFixed(2)}
+                      ${(item.price || 0).toFixed(2)}
                     </span>
                   </div>
                   {getItemQuantity(item.id) > 0 && (
@@ -267,7 +272,7 @@ export default function Billing() {
                   return (
                     <div key={selected.id} className="flex justify-between text-sm">
                       <span>{selected.quantity}x {item.name}</span>
-                      <span>${(item.price * selected.quantity).toFixed(2)}</span>
+                      <span>${((item.price || 0) * selected.quantity).toFixed(2)}</span>
                     </div>
                   );
                 })}

@@ -1,11 +1,17 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useStore } from '../../store/useStore';
 import toast from 'react-hot-toast';
 
 export default function Checkout() {
   const navigate = useNavigate();
   const { cart, addOrder, clearCart } = useStore();
+  
+  // Redirect if cart is empty
+  if (cart.length === 0) {
+    return <Navigate to="/" replace />;
+  }
+
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -46,15 +52,11 @@ export default function Checkout() {
 
       // Clear cart and redirect
       clearCart();
-      navigate('/');
+      navigate('/orders');
       toast.success('Order placed successfully!');
     });
   };
 
-  if (cart.length === 0) {
-    navigate('/');
-    return null;
-  }
 
   return (
     <div className="max-w-2xl mx-auto space-y-8">

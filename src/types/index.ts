@@ -1,19 +1,27 @@
+export interface CartItem {
+  id: string;
+  name: string;
+  price: number;
+  quantity: number;
+}
+
 export interface MenuItem {
   id: string;
   name: string;
   description: string;
   price: number;
-  image: string;
   available: boolean;
+  image: string;
   ingredients: {
     itemId: string;
     quantity: number;
     unit: string;
     wastagePercentage: number;
   }[];
+  category: string;
+  categories: string[];
   preparationInstructions: string;
   preparationTime: number;
-  category: string;
 }
 
 export interface Customer {
@@ -32,6 +40,25 @@ export interface Customer {
   lastInteraction?: Date;
   tags: string[];
   notes?: string;
+}
+
+export interface Order {
+  id: string;
+  source: 'swiggy' | 'zomato' | 'website' | 'waiter';
+  status: 'pending' | 'preparing' | 'ready' | 'completed';
+  items: Array<{
+    id: string;
+    name: string;
+    quantity: number;
+    price: number;
+    notes?: string;
+  }>;
+  total?: number;
+  customerName: string;
+  tableNumber?: string;
+  deliveryAddress?: string;
+  createdAt: Date;
+  completedAt?: Date;
 }
 
 export interface CustomerActivity {

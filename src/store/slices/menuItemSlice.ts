@@ -18,13 +18,23 @@ export const menuItemSlice: StateCreator<MenuItemSlice> = (set) => ({
     menuItems: [...state.menuItems, { 
       ...item, 
       id: crypto.randomUUID(),
-      categories: item.categories || [] 
+      price: typeof item.price === 'number' ? item.price : 0,
+      available: true,
+      categories: item.categories || [],
+      category: item.category || ''
     }]
   })),
   
   updateMenuItem: (id, updates) => set((state) => ({
     menuItems: state.menuItems.map((item) =>
-      item.id === id ? { ...item, ...updates } : item
+      item.id === id ? {
+        ...item,
+        ...updates,
+        price: typeof updates.price === 'number' ? updates.price : item.price,
+        category: updates.category || item.category,
+        categories: updates.categories || item.categories,
+        available: typeof updates.available === 'boolean' ? updates.available : item.available
+      } : item
     )
   })),
   

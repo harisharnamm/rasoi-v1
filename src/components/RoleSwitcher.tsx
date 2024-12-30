@@ -5,6 +5,7 @@ import { UserCircle } from 'lucide-react';
 const roles = [
   { id: 'user', label: 'Customer', path: '/' },
   { id: 'admin', label: 'Admin', path: '/admin' },
+  { id: 'kitchen', label: 'Kitchen', path: '/kitchen' },
   { id: 'manager', label: 'Manager', path: '/manager/tables' },
   { id: 'waiter', label: 'Waiter', path: '/waiter' }
 ];

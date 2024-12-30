@@ -11,7 +11,7 @@ export default function Cart() {
   const [tip, setTip] = useState(0);
   const [instructions, setInstructions] = useState('');
 
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const total = cart.reduce((sum, item) => sum + (item.price || 0) * item.quantity, 0);
 
   if (cart.length === 0) {
     return (
@@ -42,7 +42,7 @@ export default function Cart() {
               />
               <div className="flex-1">
                 <h3 className="font-medium text-gray-900">{item.name}</h3>
-                <p className="text-sm text-gray-500">${item.price.toFixed(2)}</p>
+                <p className="text-sm text-gray-500">${(item.price || 0).toFixed(2)}</p>
               </div>
               <div className="flex items-center space-x-4">
                 <button
@@ -64,6 +64,9 @@ export default function Cart() {
                 >
                   <Trash2 className="h-5 w-5" />
                 </button>
+                <span className="text-right">
+                  <p className="font-medium text-gray-900">${((item.price || 0) * item.quantity).toFixed(2)}</p>
+                </span>
               </div>
             </li>
           ))}

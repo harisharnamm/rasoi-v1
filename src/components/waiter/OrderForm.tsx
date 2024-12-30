@@ -76,8 +76,8 @@ export default function OrderForm({ tableId, waiterId, onClose }: OrderFormProps
     }
 
     const total = selectedItems.reduce((sum, item) => {
-      const menuItem = menuItems.find(m => m.id === item.menuItemId)!;
-      return sum + (menuItem.price * item.quantity);
+      const menuItem = menuItems.find(m => m.id === item.menuItemId);
+      return sum + ((menuItem?.price || 0) * item.quantity);
     }, 0);
 
     try {
@@ -85,12 +85,14 @@ export default function OrderForm({ tableId, waiterId, onClose }: OrderFormProps
       createOrder(tableId, waiterId, customerCount, total);
       
       selectedItems.forEach(item => {
-        const menuItem = menuItems.find(m => m.id === item.menuItemId)!;
+        const menuItem = menuItems.find(m => m.id === item.menuItemId);
+        if (!menuItem) return;
+
         addOrderItem(tableId, {
           menuItemId: item.menuItemId,
           quantity: item.quantity,
           notes: item.notes,
-          price: menuItem.price,
+          price: menuItem.price || 0,
           status: 'pending'
         });
       });
@@ -164,7 +166,9 @@ export default function OrderForm({ tableId, waiterId, onClose }: OrderFormProps
                   >
                     <div>
                       <h4 className="font-medium">{item.name}</h4>
-                      <p className="text-sm text-gray-500">${item.price.toFixed(2)}</p>
+                      <p className="text-sm text-gray-500">
+                        ${Number(item.price || 0).toFixed(2)}
+                      </p>
                     </div>
                     <button
                       onClick={() => handleAddItem(item)}
@@ -182,14 +186,16 @@ export default function OrderForm({ tableId, waiterId, onClose }: OrderFormProps
               <h3 className="font-medium text-gray-900">Order Items</h3>
               <div className="space-y-4 max-h-[50vh] overflow-y-auto">
                 {selectedItems.map(item => {
-                  const menuItem = menuItems.find(m => m.id === item.menuItemId)!;
+                  const menuItem = menuItems.find(m => m.id === item.menuItemId);
+                  if (!menuItem) return null;
+
                   return (
                     <div key={item.menuItemId} className="p-4 bg-gray-50 rounded-lg space-y-3">
                       <div className="flex items-center justify-between">
                         <div>
                           <h4 className="font-medium">{menuItem.name}</h4>
                           <p className="text-sm text-gray-500">
-                            ${(menuItem.price * item.quantity).toFixed(2)}
+                            ${Number((menuItem?.price || 0) * item.quantity).toFixed(2)}
                           </p>
                         </div>
                         <div className="flex items-center space-x-3">
@@ -231,8 +237,9 @@ export default function OrderForm({ tableId, waiterId, onClose }: OrderFormProps
                   <span>Total</span>
                   <span>
                     ${selectedItems.reduce((sum, item) => {
-                      const menuItem = menuItems.find(m => m.id === item.menuItemId)!;
-                      return sum + menuItem.price * item.quantity;
+                      const menuItem = menuItems.find(m => m.id === item.menuItemId);
+                      const price = Number(menuItem?.price || 0);
+                      return sum + (price * item.quantity);
                     }, 0).toFixed(2)}
                   </span>
                 </div>

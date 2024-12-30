@@ -2,14 +2,29 @@ import React from 'react';
 import { useStore } from '../../store/useStore';
 import { Plus } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { MenuItem } from '../../types';
 
 export default function UpsellCard() {
   const { menuItems, addToCart } = useStore();
 
   // Get popular items that could be recommended
-  const recommendedItems = menuItems
+  const recommendedItems: MenuItem[] = menuItems
     .filter(item => item.available)
     .slice(0, 3);
+
+  const handleAddToCart = (item: MenuItem) => {
+    if (!item.price) {
+      toast.error('Item price not available');
+      return;
+    }
+    addToCart({
+      id: item.id,
+      name: item.name,
+      price: item.price,
+      quantity: 1
+    });
+    toast.success('Item added to cart');
+  };
 
   return (
     <div className="bg-white rounded-lg shadow-sm p-4">
@@ -25,14 +40,13 @@ export default function UpsellCard() {
               />
               <div>
                 <h4 className="font-medium text-gray-900">{item.name}</h4>
-                <p className="text-sm text-gray-500">${item.price.toFixed(2)}</p>
+                <p className="text-sm text-gray-500">
+                  ${typeof item.price === 'number' ? item.price.toFixed(2) : '0.00'}
+                </p>
               </div>
             </div>
             <button
-              onClick={() => {
-                addToCart(item);
-                toast.success('Item added to cart');
-              }}
+              onClick={() => handleAddToCart(item)}
               className="p-2 text-indigo-600 hover:text-indigo-700 rounded-full hover:bg-indigo-50"
             >
               <Plus className="h-5 w-5" />

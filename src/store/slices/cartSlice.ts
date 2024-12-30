@@ -23,7 +23,14 @@ export const cartSlice: StateCreator<CartSlice> = (set) => ({
         ),
       };
     }
-    return { cart: [...state.cart, { ...item, quantity: 1 }] };
+    return { 
+      cart: [...state.cart, { 
+        id: item.id,
+        name: item.name,
+        price: typeof item.price === 'number' ? item.price : 0,
+        quantity: 1
+      }] 
+    };
   }),
   
   removeFromCart: (itemId) => set((state) => ({
